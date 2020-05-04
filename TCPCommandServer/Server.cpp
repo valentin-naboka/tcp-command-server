@@ -40,20 +40,11 @@ void SignalHandler::handler(const int signal)
 {
     assert(SignalHandler::_sockets);
     SignalHandler::_sockets->clear();
-//    for (const auto& s : *SignalHandler::_sockets)
-//    {
-//        close(s);
-//        std::cout<<std::endl<<s<<std::endl;
-//        //TODO: change cout to log
-//    }
+
+    //TODO: change cout to log
     std::cout<<signal<<" signal has been caught."<<std::endl;
     exit(0);
 };
-
-
-//using Action = bool (*)(const std::string &arguments, std::unique_ptr<IConnection>& conn);
-//using Action = std::function<bool (const std::string &arguments, std::unique_ptr<IConnection>& conn)>;
-//using ActionsMap = std::unordered_map<std::string, Action>;
 
 Server::Server(const uint16_t port)
     : _listener(port)
