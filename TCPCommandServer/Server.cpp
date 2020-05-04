@@ -17,18 +17,18 @@
 class SignalHandler final
 {
 public:
-    static void setupSockets(Sockets& sockets);
+    static void setupConnections(Connections& connections);
     static void setupSignal(const int signal);
 private:
     static void handler(const int signal);
-    static Sockets* _sockets;
+    static Connections* _connections;
 };
 
-Sockets* SignalHandler::_sockets = nullptr;
+Connections* SignalHandler::_connections = nullptr;
 
-void SignalHandler::setupSockets(Sockets& sockets)
+void SignalHandler::setupConnections(Connections& connections)
 {
-    _sockets = &sockets;
+    _connections = &connections;
 }
 
 void SignalHandler::setupSignal(const int signal)
@@ -38,8 +38,8 @@ void SignalHandler::setupSignal(const int signal)
 
 void SignalHandler::handler(const int signal)
 {
-    assert(SignalHandler::_sockets);
-    SignalHandler::_sockets->clear();
+    assert(SignalHandler::_connections);
+    SignalHandler::_connections->clear();
 
     //TODO: change cout to log
     std::cout<<signal<<" signal has been caught."<<std::endl;
@@ -49,7 +49,7 @@ void SignalHandler::handler(const int signal)
 Server::Server(const uint16_t port)
     : _listener(port)
 {
-        SignalHandler::setupSockets(_clientSockets);
+        SignalHandler::setupConnections(_connections);
         SignalHandler::setupSignal(SIGINT);
         SignalHandler::setupSignal(SIGTERM);
         SignalHandler::setupSignal(SIGKILL);
@@ -68,9 +68,9 @@ Error Server::run()
                 FD_ZERO(&readset);
     
                 FD_SET(_listener.getRawSocket(), &readset);
-                for(const auto& socket : _clientSockets)
+                for(const auto& connection : _connections)
                 {
-                    FD_SET(socket->getSocket().socket, &readset);
+                    FD_SET(connection->getSocket().socket, &readset);
                 }
     
                 timeval timeout;
@@ -86,16 +86,16 @@ Error Server::run()
             
                 if (FD_ISSET(_listener.getRawSocket(), &readset))
                 {
-                    _clientSockets.emplace_back(std::make_unique<Connection>(_listener.acceptConnection()));
+                    _connections.emplace_back(std::make_unique<Connection>(_listener.acceptConnection()));
                 }
     
-            for(auto socketIt = _clientSockets.begin(); socketIt != _clientSockets.end(); ++socketIt)
+            for(auto connectionIt = _connections.begin(); connectionIt != _connections.end(); ++connectionIt)
                 {
-                    const auto& socket = *socketIt;
-                    if(FD_ISSET(socket->getSocket().socket, &readset))
+                    const auto& connection = *connectionIt;
+                    if(FD_ISSET(connection->getSocket().socket, &readset))
                     {
-                        std::cout<<socket->getSocket().socket<<std::endl;
-                        const auto& result = socket->read();
+                        std::cout<<connection->getSocket().socket<<std::endl;
+                        const auto& result = connection->read();
                         
                         //TODO: use std::visit
                         if(const auto* dataPacket = std::get_if<DataPacket>(&result))
@@ -103,7 +103,7 @@ Error Server::run()
                             const auto actionIt = _actions.find(*dataPacket);
                             if (actionIt != _actions.end()){
                                 //TODO: parse arguments
-                                actionIt->second(actionIt->first, socketIt);
+                                actionIt->second(actionIt->first, connectionIt);
                             }
                             std::cout<<*dataPacket<<std::endl;
                         }
@@ -117,20 +117,20 @@ Error Server::run()
     return Error();
 }
 
-void Server::closeClientConnection(const Sockets::const_iterator& it)
+void Server::closeClientConnection(const Connections::const_iterator& it)
 {
-    _clientSockets.erase(it);
+    _connections.erase(it);
 }
 
 int Server::getMaxSocketValue() const
 {
     auto maxSocketValue = _listener.getRawSocket();
-    if(!_clientSockets.empty())
+    if(!_connections.empty())
     {
-        const auto maxIt = std::max_element(_clientSockets.cbegin(),
-                                                          _clientSockets.cend(),
-                                                          [](const Sockets::value_type& lhs,
-                                                             const Sockets::value_type& rhs)
+        const auto maxIt = std::max_element(_connections.cbegin(),
+                                                          _connections.cend(),
+                                                          [](const Connections::value_type& lhs,
+                                                             const Connections::value_type& rhs)
                                                           {
                                                               return lhs->getSocket() < rhs->getSocket();
                                                           });

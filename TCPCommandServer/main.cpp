@@ -12,7 +12,7 @@ int main(int argc , char *argv[])
     Server server(4000);
     
     server.registerAction("version", [](const std::string &arguments,
-                                        const Sockets::const_iterator& connIt)
+                                        const Connections::const_iterator& connIt)
                                     {
                                         const auto Version = "ZSoft test task server version 1.0.\n\r";
                                         assert(*connIt);
@@ -22,7 +22,7 @@ int main(int argc , char *argv[])
                           );
 
     server.registerAction("exit", [&server](const std::string &arguments,
-                                            const Sockets::const_iterator& connIt)
+                                            const Connections::const_iterator& connIt)
                                     {
                                         server.closeClientConnection(connIt);
                                         return true;

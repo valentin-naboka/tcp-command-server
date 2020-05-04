@@ -26,7 +26,7 @@ ListenerSocket::ListenerSocket(const uint16_t port)
         throw Error("Binding was failed.");
     }
     
-    const uint8_t QueueLenght = 50;
+    const uint8_t QueueLenght = 3;
     if(listen(_listener.socket , QueueLenght) > 0)
     {
         throw Error("Listening was failed.");
