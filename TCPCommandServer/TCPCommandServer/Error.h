@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-// Copyright (c) 2020, Valentin Naboka, valentin.naboka@gmail.com. 
+// Copyright (c) 2020, Valentin Naboka, valentin.naboka@gmail.com.
 // The sources are under MIT license.
 //-----------------------------------------------------------------------------
 
@@ -7,15 +7,14 @@
 
 #include <string>
 
-class Error
-{
+class Error {
 public:
-    Error () = default;
-    Error (std::string error);
-    
+    Error() = default;
+    Error(std::string error);
+
     operator std::string() const;
     operator bool() const;
-    
+
 private:
     std::string _errorMsg;
 };

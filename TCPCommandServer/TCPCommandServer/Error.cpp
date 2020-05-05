@@ -1,15 +1,15 @@
 //-----------------------------------------------------------------------------
-// Copyright (c) 2020, Valentin Naboka, valentin.naboka@gmail.com. 
+// Copyright (c) 2020, Valentin Naboka, valentin.naboka@gmail.com.
 // The sources are under MIT license.
 //-----------------------------------------------------------------------------
 
 #include "Error.h"
 
-#include <sstream>
 #include <cstring>
+#include <sstream>
 
-Error::Error (std::string error)
-: _errorMsg(std::move(error))
+Error::Error(std::string error)
+    : _errorMsg(std::move(error))
 {
 }
 
@@ -26,6 +26,6 @@ Error::operator bool() const
 std::string wrapErrorno(std::string description)
 {
     std::stringstream ss;
-    ss<<std::move(description)<<std::strerror(errno);
+    ss << std::move(description) << std::strerror(errno);
     return ss.str();
 }

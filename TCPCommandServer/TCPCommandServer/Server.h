@@ -1,34 +1,33 @@
 //-----------------------------------------------------------------------------
-// Copyright (c) 2020, Valentin Naboka, valentin.naboka@gmail.com. 
+// Copyright (c) 2020, Valentin Naboka, valentin.naboka@gmail.com.
 // The sources are under MIT license.
 //-----------------------------------------------------------------------------
 
 #pragma once
-
-#include "ListenerSocket.h"
 #include "Error.h"
 #include "IConnection.h"
-
-#include <unordered_map>
-#include <functional>
+#include "ListenerSocket.h"
 #include "Connections.h"
 
-using Action = std::function<bool (const std::string &arguments, const Connections::const_iterator& conn)>;
+#include <functional>
+#include <unordered_map>
+
+using Action = std::function<bool(const std::string& arguments, const Connections::const_iterator& conn)>;
 using ActionsMap = std::unordered_map<std::string, Action>;
 
 class Server {
 public:
     Server(const uint16_t port, const uint16_t maxSimultaneousConnections);
-    
+
     void registerAction(std::string name, Action action);
     Error run();
     void closeClientConnection(const Connections::const_iterator& it);
-    
+
 private:
     void handleListenerScoket();
     void handleClientConnection(const Connections::const_iterator& connIt);
     int getMaxSocketValue() const;
-    
+
 private:
     ListenerSocket _listener;
     Connections _connections;

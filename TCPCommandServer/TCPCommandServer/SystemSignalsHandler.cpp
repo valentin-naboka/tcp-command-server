@@ -1,14 +1,14 @@
 //-----------------------------------------------------------------------------
-// Copyright (c) 2020, Valentin Naboka, valentin.naboka@gmail.com. 
+// Copyright (c) 2020, Valentin Naboka, valentin.naboka@gmail.com.
 // The sources are under MIT license.
 //-----------------------------------------------------------------------------
 
 #include "SystemSignalsHandler.h"
 #include "Logger.h"
 
-#include <sstream>
-#include <csignal>
 #include <cassert>
+#include <csignal>
+#include <sstream>
 
 Connections* SignalHandler::_connections = nullptr;
 
@@ -28,7 +28,8 @@ void SignalHandler::handler(const int signal)
     SignalHandler::_connections->clear();
 
     std::stringstream ss;
-    ss<<signal<<" signal has been caught."<<std::endl<<"Server has been stopped.";
+    ss << signal << " signal has been caught." << std::endl
+       << "Server has been stopped.";
     Logger::log(ss.str());
     exit(0);
 };
