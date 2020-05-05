@@ -1,7 +1,0 @@
-The sources compile for Ubuntu 18.04 using gcc 8.4.0
-For MacOS Mojave with Apple clang version 11.0.0 (clang-1100.0.33.8)
-
-To build from sources:
-- create build dir
-- go to build dir and run "cmake ../TCPCommandServer" to generate make files
-- run "make" to build sources

@@ -1,3 +1,8 @@
+//-----------------------------------------------------------------------------
+// Copyright (c) 2020, Valentin Naboka, valentin.naboka@gmail.com. 
+// The sources are under MIT license.
+//-----------------------------------------------------------------------------
+
 #include "SystemSignalsHandler.h"
 #include "Logger.h"
 
