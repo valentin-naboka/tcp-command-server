@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A7395E8724605BC500788534 /* Connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7395E7D24605BC400788534 /* Connection.cpp */; };
-		A7395E8824605BC500788534 /* ListenerSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7395E8024605BC400788534 /* ListenerSocket.cpp */; };
-		A7395E8924605BC500788534 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7395E8124605BC500788534 /* main.cpp */; };
-		A7395E8A24605BC500788534 /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7395E8224605BC500788534 /* Server.cpp */; };
-		A7395E8D24606AB500788534 /* SystemSignalsHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7395E8B24606AB500788534 /* SystemSignalsHandler.cpp */; };
-		A76B5ED02460C57500D98F1F /* Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A76B5ECE2460C57500D98F1F /* Logger.cpp */; };
-		A76B5ED224617B5000D98F1F /* Error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A76B5ED124617B5000D98F1F /* Error.cpp */; };
+		A76B5F0D2461A33100D98F1F /* Connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A76B5F042461A31100D98F1F /* Connection.cpp */; };
+		A76B5F0E2461A33100D98F1F /* ListenerSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A76B5F002461A31100D98F1F /* ListenerSocket.cpp */; };
+		A76B5F0F2461A33100D98F1F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A76B5EFE2461A31100D98F1F /* main.cpp */; };
+		A76B5F102461A33100D98F1F /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A76B5F012461A31100D98F1F /* Server.cpp */; };
+		A76B5F112461A33100D98F1F /* Error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A76B5ED124617B5000D98F1F /* Error.cpp */; };
+		A76B5F122461A33100D98F1F /* SystemSignalsHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7395E8B24606AB500788534 /* SystemSignalsHandler.cpp */; };
+		A76B5F132461A33100D98F1F /* Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A76B5ECE2460C57500D98F1F /* Logger.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -30,22 +30,23 @@
 
 /* Begin PBXFileReference section */
 		A7395E7324605BA200788534 /* TCPCommandServer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TCPCommandServer; sourceTree = BUILT_PRODUCTS_DIR; };
-		A7395E7D24605BC400788534 /* Connection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Connection.cpp; sourceTree = SOURCE_ROOT; };
-		A7395E7E24605BC400788534 /* SocketHolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketHolder.h; sourceTree = SOURCE_ROOT; };
-		A7395E7F24605BC400788534 /* IConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IConnection.h; sourceTree = SOURCE_ROOT; };
-		A7395E8024605BC400788534 /* ListenerSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ListenerSocket.cpp; sourceTree = SOURCE_ROOT; };
-		A7395E8124605BC500788534 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = SOURCE_ROOT; };
-		A7395E8224605BC500788534 /* Server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Server.cpp; sourceTree = SOURCE_ROOT; };
-		A7395E8324605BC500788534 /* Error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Error.h; sourceTree = SOURCE_ROOT; };
-		A7395E8424605BC500788534 /* Server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = SOURCE_ROOT; };
-		A7395E8524605BC500788534 /* Connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connection.h; sourceTree = SOURCE_ROOT; };
-		A7395E8624605BC500788534 /* ListenerSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListenerSocket.h; sourceTree = SOURCE_ROOT; };
 		A7395E8B24606AB500788534 /* SystemSignalsHandler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SystemSignalsHandler.cpp; sourceTree = "<group>"; };
 		A7395E8C24606AB500788534 /* SystemSignalsHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SystemSignalsHandler.h; sourceTree = "<group>"; };
 		A7395E8E24606B4700788534 /* Connections.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Connections.h; sourceTree = "<group>"; };
 		A76B5ECE2460C57500D98F1F /* Logger.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Logger.cpp; sourceTree = "<group>"; };
 		A76B5ECF2460C57500D98F1F /* Logger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
 		A76B5ED124617B5000D98F1F /* Error.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Error.cpp; sourceTree = "<group>"; };
+		A76B5EFE2461A31100D98F1F /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		A76B5EFF2461A31100D98F1F /* Error.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Error.h; sourceTree = "<group>"; };
+		A76B5F002461A31100D98F1F /* ListenerSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ListenerSocket.cpp; sourceTree = "<group>"; };
+		A76B5F012461A31100D98F1F /* Server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Server.cpp; sourceTree = "<group>"; };
+		A76B5F022461A31100D98F1F /* SocketHolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketHolder.h; sourceTree = "<group>"; };
+		A76B5F032461A31100D98F1F /* Connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connection.h; sourceTree = "<group>"; };
+		A76B5F042461A31100D98F1F /* Connection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Connection.cpp; sourceTree = "<group>"; };
+		A76B5F052461A31100D98F1F /* ListenerSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListenerSocket.h; sourceTree = "<group>"; };
+		A76B5F062461A31100D98F1F /* Readme */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme; sourceTree = "<group>"; };
+		A76B5F072461A31100D98F1F /* Server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = "<group>"; };
+		A76B5F082461A31100D98F1F /* IConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IConnection.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,17 +79,18 @@
 		A7395E7524605BA200788534 /* TCPCommandServer */ = {
 			isa = PBXGroup;
 			children = (
-				A7395E7D24605BC400788534 /* Connection.cpp */,
-				A7395E8524605BC500788534 /* Connection.h */,
-				A7395E8324605BC500788534 /* Error.h */,
+				A76B5F042461A31100D98F1F /* Connection.cpp */,
+				A76B5F032461A31100D98F1F /* Connection.h */,
+				A76B5EFF2461A31100D98F1F /* Error.h */,
+				A76B5F082461A31100D98F1F /* IConnection.h */,
+				A76B5F002461A31100D98F1F /* ListenerSocket.cpp */,
+				A76B5F052461A31100D98F1F /* ListenerSocket.h */,
+				A76B5EFE2461A31100D98F1F /* main.cpp */,
+				A76B5F062461A31100D98F1F /* Readme */,
+				A76B5F012461A31100D98F1F /* Server.cpp */,
+				A76B5F072461A31100D98F1F /* Server.h */,
+				A76B5F022461A31100D98F1F /* SocketHolder.h */,
 				A76B5ED124617B5000D98F1F /* Error.cpp */,
-				A7395E7F24605BC400788534 /* IConnection.h */,
-				A7395E8024605BC400788534 /* ListenerSocket.cpp */,
-				A7395E8624605BC500788534 /* ListenerSocket.h */,
-				A7395E8124605BC500788534 /* main.cpp */,
-				A7395E8224605BC500788534 /* Server.cpp */,
-				A7395E8424605BC500788534 /* Server.h */,
-				A7395E7E24605BC400788534 /* SocketHolder.h */,
 				A7395E8B24606AB500788534 /* SystemSignalsHandler.cpp */,
 				A7395E8C24606AB500788534 /* SystemSignalsHandler.h */,
 				A7395E8E24606B4700788534 /* Connections.h */,
@@ -155,13 +157,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7395E8824605BC500788534 /* ListenerSocket.cpp in Sources */,
-				A76B5ED224617B5000D98F1F /* Error.cpp in Sources */,
-				A76B5ED02460C57500D98F1F /* Logger.cpp in Sources */,
-				A7395E8D24606AB500788534 /* SystemSignalsHandler.cpp in Sources */,
-				A7395E8724605BC500788534 /* Connection.cpp in Sources */,
-				A7395E8A24605BC500788534 /* Server.cpp in Sources */,
-				A7395E8924605BC500788534 /* main.cpp in Sources */,
+				A76B5F0D2461A33100D98F1F /* Connection.cpp in Sources */,
+				A76B5F0E2461A33100D98F1F /* ListenerSocket.cpp in Sources */,
+				A76B5F0F2461A33100D98F1F /* main.cpp in Sources */,
+				A76B5F102461A33100D98F1F /* Server.cpp in Sources */,
+				A76B5F112461A33100D98F1F /* Error.cpp in Sources */,
+				A76B5F122461A33100D98F1F /* SystemSignalsHandler.cpp in Sources */,
+				A76B5F132461A33100D98F1F /* Logger.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

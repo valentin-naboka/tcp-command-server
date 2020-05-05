@@ -16,4 +16,3 @@ private:
 };
 
 std::string wrapErrorno(std::string description);
-

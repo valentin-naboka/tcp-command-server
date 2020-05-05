@@ -71,7 +71,6 @@ void Server::handleListenerScoket()
 {
     if (_connections.size() < _maxSimultaneousConnections)
     {
-        //TODO: resolve std::visit
         auto result = _listener.acceptConnection();
         if(auto* socketHolder = std::get_if<SocketHolder>(&result))
         {
@@ -87,7 +86,6 @@ void Server::handleClientConnection(const Connections::const_iterator& connIt)
 {
     const auto& connection = *connIt;
     const auto& result = connection->read();
-    //TODO: use std::visit
     if(const auto* dataPacket = std::get_if<DataPacket>(&result))
     {
         const auto commandLastPos = dataPacket->find_first_of(" ");
@@ -145,4 +143,3 @@ int Server::getMaxSocketValue() const
     }
     return maxSocketValue + 1;
 }
-
