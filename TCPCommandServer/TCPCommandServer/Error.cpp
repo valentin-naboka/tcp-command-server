@@ -1,10 +1,7 @@
 #include "Error.h"
+
 #include <sstream>
-    
-Error::Error (std::string error)
-: _errorMsg(std::move(error))
-{
-}
+#include <cstring>
 
 Error::operator std::string() const
 {

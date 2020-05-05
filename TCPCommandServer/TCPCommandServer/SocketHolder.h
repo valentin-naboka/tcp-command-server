@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <string>
 #include <sstream>
+#include <cstring>
 
 struct SocketHolder final
 {

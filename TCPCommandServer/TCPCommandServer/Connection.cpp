@@ -4,6 +4,7 @@
 #include <errno.h>
 #include <sys/socket.h>
 #include <string>
+#include <algorithm>
 
 Connection::Connection(SocketHolder socket)
 : _socketHolder(std::move(socket))

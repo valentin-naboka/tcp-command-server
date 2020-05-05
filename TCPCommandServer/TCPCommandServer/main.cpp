@@ -1,11 +1,7 @@
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <fcntl.h>
-#include <cstdarg>
-
 #include "Server.h"
 #include <iostream>
 #include <unordered_map>
+#include <cassert>
 
 const uint16_t Port = 5678;
 const uint16_t MaxSimultaneousConnections = 3;

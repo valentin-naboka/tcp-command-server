@@ -4,6 +4,7 @@
 
 #include <variant>
 #include <sstream>
+#include <signal.h>
 
 Server::Server(const uint16_t port, const uint16_t maxSimultaneousConnections)
     : _listener(port, maxSimultaneousConnections)

@@ -2,6 +2,8 @@
 #include "Logger.h"
 
 #include <sstream>
+#include <csignal>
+#include <cassert>
 
 Connections* SignalHandler::_connections = nullptr;
 
