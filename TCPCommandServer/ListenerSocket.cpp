@@ -5,54 +5,57 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-//TODO: remove
-using Error = std::logic_error;
-
 ListenerSocket::ListenerSocket(const uint16_t port, const uint16_t maxSimultaneousConnections)
-    : _maxSimultaneousConnections(maxSimultaneousConnections)
+    : _port(port)
+    , _maxSimultaneousConnections(maxSimultaneousConnections)
+{
+}
+
+Error ListenerSocket::init()
 {
     _listener.socket = socket(AF_INET , SOCK_STREAM , 0);
     if (_listener.socket == -1)
     {
-        throw Error("Could not create socket.");
+        return Error(wrapErrorno("сould not create socket: "));
     }
     
     sockaddr_in server;
     server.sin_family = AF_INET;
     server.sin_addr.s_addr = INADDR_ANY;
-    server.sin_port = htons(port);
+    server.sin_port = htons(_port);
     
-    if( bind(_listener.socket,(struct sockaddr *)&server , sizeof(server)) < 0)
+    if(bind(_listener.socket,(struct sockaddr *)&server , sizeof(server)) < 0)
     {
-        throw Error("Binding was failed.");
+        return Error(wrapErrorno("сould not bind socket: "));
     }
     
-    const uint8_t QueueLenght = maxSimultaneousConnections;
+    const uint8_t QueueLenght = _maxSimultaneousConnections;
     if(listen(_listener.socket , QueueLenght) > 0)
     {
-        throw Error("Listening was failed.");
+        return Error(wrapErrorno("сould not set socket to the listen mode: "));
     }
+    return Error();
 }
 
-SocketHolder ListenerSocket::acceptConnection() const
+ListenerSocketResult ListenerSocket::acceptConnection() const
 {
     sockaddr_in client;
     int size = sizeof(struct sockaddr_in);
     const auto clientSock = accept(_listener.socket, (struct sockaddr *)&client, (socklen_t*)&size);
     if (clientSock < 0)
     {
-        throw Error("Accepting was failed.");
+        return Error(wrapErrorno("сould not accept connection: "));
     }
     
     int flags = 0;
     if ((flags = fcntl(clientSock, F_GETFL, 0)) < 0)
     {
-        throw Error("Couldn't get socket flags.");
+        return Error(wrapErrorno("could not get socket flags: "));
     }
     
     if (fcntl(clientSock, F_SETFL, flags | O_NONBLOCK) < 0)
     {
-        throw Error("Couldn't set socket flags.");
+        return Error(wrapErrorno("could not set socket flags: "));
     }
     
     return SocketHolder(clientSock);

@@ -13,6 +13,7 @@
 		A7395E8A24605BC500788534 /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7395E8224605BC500788534 /* Server.cpp */; };
 		A7395E8D24606AB500788534 /* SystemSignalsHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7395E8B24606AB500788534 /* SystemSignalsHandler.cpp */; };
 		A76B5ED02460C57500D98F1F /* Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A76B5ECE2460C57500D98F1F /* Logger.cpp */; };
+		A76B5ED224617B5000D98F1F /* Error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A76B5ED124617B5000D98F1F /* Error.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -44,6 +45,7 @@
 		A7395E8E24606B4700788534 /* Connections.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Connections.h; sourceTree = "<group>"; };
 		A76B5ECE2460C57500D98F1F /* Logger.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Logger.cpp; sourceTree = "<group>"; };
 		A76B5ECF2460C57500D98F1F /* Logger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
+		A76B5ED124617B5000D98F1F /* Error.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Error.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 				A7395E7D24605BC400788534 /* Connection.cpp */,
 				A7395E8524605BC500788534 /* Connection.h */,
 				A7395E8324605BC500788534 /* Error.h */,
+				A76B5ED124617B5000D98F1F /* Error.cpp */,
 				A7395E7F24605BC400788534 /* IConnection.h */,
 				A7395E8024605BC400788534 /* ListenerSocket.cpp */,
 				A7395E8624605BC500788534 /* ListenerSocket.h */,
@@ -153,6 +156,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7395E8824605BC500788534 /* ListenerSocket.cpp in Sources */,
+				A76B5ED224617B5000D98F1F /* Error.cpp in Sources */,
 				A76B5ED02460C57500D98F1F /* Logger.cpp in Sources */,
 				A7395E8D24606AB500788534 /* SystemSignalsHandler.cpp in Sources */,
 				A7395E8724605BC500788534 /* Connection.cpp in Sources */,

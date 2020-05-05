@@ -43,7 +43,12 @@ int main(int argc , char *argv[])
                                     }
                           );
 
-    server.run();
+    Logger::log("Starting server...");
+    if(const auto& error = server.run())
+    {
+        Logger::error(error);
+        return -1;
+    }
     return 0;
 }
     

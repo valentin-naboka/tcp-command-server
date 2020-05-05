@@ -8,5 +8,5 @@ void Logger::log(std::string str)
 
 void Logger::error(std::string error)
 {
-    std::cerr<<error;
+    std::cerr<<error<<std::endl;
 }

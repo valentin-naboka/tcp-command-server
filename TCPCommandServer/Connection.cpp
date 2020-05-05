@@ -15,7 +15,6 @@ const SocketHolder& Connection::getSocket() const
     return _socketHolder;
 }
 
-//TODO: check it
 ConnectionResult Connection::read() const
 {
     DataPacket packet;
@@ -35,7 +34,7 @@ ConnectionResult Connection::read() const
     
     if(readSize < 0 && (errno != EWOULDBLOCK || errno != EAGAIN))
     {
-        return std::string("receiving was failed: ")  + strerror(errno);
+        return std::string("receiving was failed: ")  + std::strerror(errno);
     }
     
     if(readSize == 0)
@@ -54,14 +53,14 @@ Error Connection::write(const DataPacket& data)
         const auto chunkSentSize = send(_socketHolder.socket, data.data() + sentSize, data.size() - sentSize, 0);
         if (chunkSentSize == -1)
         {
-            return Error(strerror(errno));
+            return Error(std::strerror(errno));
         }
         sentSize += chunkSentSize;
     };
     
     if(sentSize < 0 && (errno != EWOULDBLOCK || errno != EAGAIN))
     {
-        return std::string("sending was failed: ")  + strerror(errno);
+        return std::string("sending was failed: ")  + std::strerror(errno);
     }
     return Error();
 }

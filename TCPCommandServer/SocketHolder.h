@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string>
+#include <sstream>
 
 struct SocketHolder final
 {
@@ -31,9 +32,18 @@ struct SocketHolder final
     
     ~SocketHolder()
     {
-        if(socket != -1 && close(socket) != 0)
+        if(socket != -1)
         {
-            Logger::error(strerror(errno));
+            if(close(socket) != 0)
+            {
+                Logger::error(std::strerror(errno));
+            }
+            else
+            {
+                std::stringstream ss;
+                ss<<"socket "<<socket<<" connection has been closed.";
+                Logger::log(ss.str());
+            }
         }
     }
     

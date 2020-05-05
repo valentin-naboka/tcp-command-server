@@ -20,6 +20,8 @@ public:
     void closeClientConnection(const Connections::const_iterator& it);
     
 private:
+    void handleListenerScoket();
+    void handleClientConnection(const Connections::const_iterator& connIt);
     int getMaxSocketValue() const;
     
 private:

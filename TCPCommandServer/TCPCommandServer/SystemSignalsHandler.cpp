@@ -1,7 +1,7 @@
 #include "SystemSignalsHandler.h"
+#include "Logger.h"
 
-//TODO: remove
-#include <iostream>
+#include <sstream>
 
 Connections* SignalHandler::_connections = nullptr;
 
@@ -20,7 +20,8 @@ void SignalHandler::handler(const int signal)
     assert(SignalHandler::_connections);
     SignalHandler::_connections->clear();
 
-    //TODO: change cout to log
-    std::cout<<signal<<" signal has been caught."<<std::endl;
+    std::stringstream ss;
+    ss<<signal<<" signal has been caught."<<std::endl<<"Server has been stopped.";
+    Logger::log(ss.str());
     exit(0);
 };
