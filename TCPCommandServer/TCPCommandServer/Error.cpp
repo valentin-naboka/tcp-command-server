@@ -3,6 +3,11 @@
 #include <sstream>
 #include <cstring>
 
+Error::Error (std::string error)
+: _errorMsg(std::move(error))
+{
+}
+
 Error::operator std::string() const
 {
     return _errorMsg;
