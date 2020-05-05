@@ -9,8 +9,7 @@
 
 int main(int argc , char *argv[])
 {
-    //TODO: change port
-    Server server(4000, 3);
+    Server server(5678, 3);
     
     server.registerAction("version", [](const std::string &arguments,
                                         const Connections::const_iterator& connIt)

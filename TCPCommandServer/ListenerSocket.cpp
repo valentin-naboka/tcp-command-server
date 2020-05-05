@@ -13,7 +13,7 @@ ListenerSocket::ListenerSocket(const uint16_t port, const uint16_t maxSimultaneo
 
 Error ListenerSocket::init()
 {
-    _listener.socket = socket(AF_INET , SOCK_STREAM , 0);
+    _listener.socket = socket(AF_INET, SOCK_STREAM, 0);
     if (_listener.socket == -1)
     {
         return Error(wrapErrorno("сould not create socket: "));
