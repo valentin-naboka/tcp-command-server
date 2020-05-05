@@ -1,11 +1,3 @@
-//
-//  Connection.hpp
-//  MysqlProxy
-//
-//  Created by Valentin on 5/4/20.
-//  Copyright © 2020 Valentin. All rights reserved.
-//
-
 #pragma once
 #include "IConnection.h"
 
@@ -18,7 +10,10 @@ public:
     ConnectionResult read() const override;
     Error write(const DataPacket& data) override;
     
-    ~Connection() override;
+    Error sendAck() override;
+    Error sendError() override;
+    
+    ~Connection() override = default;
 private:
     SocketHolder _socketHolder;
 };

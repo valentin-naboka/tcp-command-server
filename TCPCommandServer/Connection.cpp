@@ -1,11 +1,3 @@
-//
-//  Connection.cpp
-//  MysqlProxy
-//
-//  Created by Valentin on 5/4/20.
-//  Copyright © 2020 Valentin. All rights reserved.
-//
-
 #include "Connection.h"
 
 #include <unistd.h>
@@ -41,10 +33,14 @@ ConnectionResult Connection::read() const
                                     });
     }
     
-    //TODO: resolve connection reset by peer
     if(readSize < 0 && (errno != EWOULDBLOCK || errno != EAGAIN))
     {
         return std::string("receiving was failed: ")  + strerror(errno);
+    }
+    
+    if(readSize == 0)
+    {
+        return CloseTag{};
     }
     return packet;
 }
@@ -63,7 +59,6 @@ Error Connection::write(const DataPacket& data)
         sentSize += chunkSentSize;
     };
     
-    //TODO: resolve connection reset by peer
     if(sentSize < 0 && (errno != EWOULDBLOCK || errno != EAGAIN))
     {
         return std::string("sending was failed: ")  + strerror(errno);
@@ -71,6 +66,12 @@ Error Connection::write(const DataPacket& data)
     return Error();
 }
 
-Connection::~Connection()
+Error Connection::sendAck()
 {
+    return write("OK\n\r");
+}
+
+Error Connection::sendError()
+{
+    return write("ERROR\n\r");
 }

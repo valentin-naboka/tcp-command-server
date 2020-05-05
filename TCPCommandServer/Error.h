@@ -1,11 +1,3 @@
-//
-//  Error.h
-//  MysqlProxy
-//
-//  Created by Valentin on 5/4/20.
-//  Copyright © 2020 Valentin. All rights reserved.
-//
-
 #pragma once
 #include <string>
 
@@ -22,6 +14,11 @@ public:
     operator std::string() const {
         return _errorMsg;
     }
+    
+    operator bool() const {
+        return !_errorMsg.empty();
+    }
+    
 private:
     std::string _errorMsg;
 };

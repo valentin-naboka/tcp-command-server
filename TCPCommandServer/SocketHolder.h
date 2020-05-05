@@ -1,4 +1,6 @@
 #pragma once
+#include "Logger.h"
+
 #include <unistd.h>
 #include <errno.h>
 #include <string>
@@ -29,18 +31,15 @@ struct SocketHolder final
     
     ~SocketHolder()
     {
-        if(socket != -1)
-            if (close(socket) != 0)
-            {
-                //TODO: log it
-                strerror(errno);
-            }
+        if(socket != -1 && close(socket) != 0)
+        {
+            Logger::error(strerror(errno));
+        }
     }
     
     int socket = -1;
 };
 
-//TODO: remove comparison?
 inline bool operator<(const SocketHolder& lhs, const SocketHolder& rhs)
 {
     return lhs.socket < rhs.socket;

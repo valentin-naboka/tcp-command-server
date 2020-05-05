@@ -8,7 +8,8 @@
 //TODO: remove
 using Error = std::logic_error;
 
-ListenerSocket::ListenerSocket(const uint16_t port)
+ListenerSocket::ListenerSocket(const uint16_t port, const uint16_t maxSimultaneousConnections)
+    : _maxSimultaneousConnections(maxSimultaneousConnections)
 {
     _listener.socket = socket(AF_INET , SOCK_STREAM , 0);
     if (_listener.socket == -1)
@@ -26,7 +27,7 @@ ListenerSocket::ListenerSocket(const uint16_t port)
         throw Error("Binding was failed.");
     }
     
-    const uint8_t QueueLenght = 3;
+    const uint8_t QueueLenght = maxSimultaneousConnections;
     if(listen(_listener.socket , QueueLenght) > 0)
     {
         throw Error("Listening was failed.");

@@ -11,6 +11,8 @@
 		A7395E8824605BC500788534 /* ListenerSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7395E8024605BC400788534 /* ListenerSocket.cpp */; };
 		A7395E8924605BC500788534 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7395E8124605BC500788534 /* main.cpp */; };
 		A7395E8A24605BC500788534 /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7395E8224605BC500788534 /* Server.cpp */; };
+		A7395E8D24606AB500788534 /* SystemSignalsHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A7395E8B24606AB500788534 /* SystemSignalsHandler.cpp */; };
+		A76B5ED02460C57500D98F1F /* Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A76B5ECE2460C57500D98F1F /* Logger.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,6 +39,11 @@
 		A7395E8424605BC500788534 /* Server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = SOURCE_ROOT; };
 		A7395E8524605BC500788534 /* Connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connection.h; sourceTree = SOURCE_ROOT; };
 		A7395E8624605BC500788534 /* ListenerSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListenerSocket.h; sourceTree = SOURCE_ROOT; };
+		A7395E8B24606AB500788534 /* SystemSignalsHandler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SystemSignalsHandler.cpp; sourceTree = "<group>"; };
+		A7395E8C24606AB500788534 /* SystemSignalsHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SystemSignalsHandler.h; sourceTree = "<group>"; };
+		A7395E8E24606B4700788534 /* Connections.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Connections.h; sourceTree = "<group>"; };
+		A76B5ECE2460C57500D98F1F /* Logger.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Logger.cpp; sourceTree = "<group>"; };
+		A76B5ECF2460C57500D98F1F /* Logger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +86,11 @@
 				A7395E8224605BC500788534 /* Server.cpp */,
 				A7395E8424605BC500788534 /* Server.h */,
 				A7395E7E24605BC400788534 /* SocketHolder.h */,
+				A7395E8B24606AB500788534 /* SystemSignalsHandler.cpp */,
+				A7395E8C24606AB500788534 /* SystemSignalsHandler.h */,
+				A7395E8E24606B4700788534 /* Connections.h */,
+				A76B5ECE2460C57500D98F1F /* Logger.cpp */,
+				A76B5ECF2460C57500D98F1F /* Logger.h */,
 			);
 			path = TCPCommandServer;
 			sourceTree = "<group>";
@@ -141,6 +153,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7395E8824605BC500788534 /* ListenerSocket.cpp in Sources */,
+				A76B5ED02460C57500D98F1F /* Logger.cpp in Sources */,
+				A7395E8D24606AB500788534 /* SystemSignalsHandler.cpp in Sources */,
 				A7395E8724605BC500788534 /* Connection.cpp in Sources */,
 				A7395E8A24605BC500788534 /* Server.cpp in Sources */,
 				A7395E8924605BC500788534 /* main.cpp in Sources */,
