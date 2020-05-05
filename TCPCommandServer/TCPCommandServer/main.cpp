@@ -7,9 +7,12 @@
 #include <iostream>
 #include <unordered_map>
 
+const uint16_t Port = 5678;
+const uint16_t MaxSimultaneousConnections = 3;
+
 int main(int argc , char *argv[])
 {
-    Server server(5678, 3);
+    Server server(Port, MaxSimultaneousConnections);
     
     server.registerAction("version", [](const std::string &arguments,
                                         const Connections::const_iterator& connIt)
