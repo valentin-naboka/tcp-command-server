@@ -5,4 +5,4 @@ To build from sources:
 - Create build dir (Important: build dir should have upper level than CMakeLists.txt dir)
 - go to build dir and run "cmake ../TCPCommandServer" to generate make files. 
   If you need specify compiller - define variables, e.g. "cmake ../TCPCommandServer  -DCMAKE_CXX_COMPILER=<path_to_compiler> -DCMAKE_C_COMPILER=<path_to_compiler>"
-- run "make" to build sources.
+- run "make -j4" to build sources.
