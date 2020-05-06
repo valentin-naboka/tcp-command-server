@@ -32,6 +32,20 @@ Error ListenerSocket::init()
         return Error(wrapErrorno("сould not bind socket: "));
     }
 
+    /**
+     * MG
+     *
+     * Nice to have
+     *
+     * The following allows to quickly restart the server without getting 
+     * "сould not bind socket: Address already in use" error:
+     *
+     * if (setsockopt(_listener.socket, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int)) < 0)) {
+     *    ...
+     * }
+     *
+     * https://stackoverflow.com/questions/24194961/how-do-i-use-setsockoptso-reuseaddr
+     */
     const uint8_t QueueLenght = _maxSimultaneousConnections;
     if (listen(_listener.socket, QueueLenght) > 0) {
         return Error(wrapErrorno("сould not set socket to the listen mode: "));
@@ -53,10 +67,26 @@ ListenerSocketResult ListenerSocket::acceptConnection() const
         return Error(wrapErrorno("could not get socket flags: "));
     }
 
+    /**
+     * MG
+     *
+     * Kudos
+     *
+     * This is absolutely correct.
+     * But I'd like to know why you put it here :)
+     */
     if (fcntl(clientSock, F_SETFL, flags | O_NONBLOCK) < 0) {
         return Error(wrapErrorno("could not set socket flags: "));
     }
 
+    /**
+     * MG
+     *
+     * Requirements violation
+     *
+     * Current connections number must be checked against _maxSimultaneousConnections here
+     * and all excess connections must be refused by closing client socket.
+     */
     return SocketHolder(clientSock);
 }
 

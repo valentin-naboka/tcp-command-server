@@ -8,6 +8,13 @@
 #include <iostream>
 #include <unordered_map>
 
+/**
+ * MG
+ *
+ * Kudos
+ *
+ * Having top level configuration on (actually) top level is nice.
+ */
 const uint16_t Port = 5678;
 const uint16_t MaxSimultaneousConnections = 3;
 

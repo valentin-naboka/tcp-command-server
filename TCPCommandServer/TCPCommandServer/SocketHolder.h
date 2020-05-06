@@ -39,6 +39,11 @@ struct SocketHolder final {
     {
         if (socket != -1) {
             if (close(socket) != 0) {
+                /**
+                 * MG
+                 *
+                 * I'm impressed!! :)
+                 */
                 Logger::error(std::strerror(errno));
             } else {
                 std::stringstream ss;
