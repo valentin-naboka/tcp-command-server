@@ -8,6 +8,7 @@
 #include <fcntl.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <sys/types.h>
 #include <unistd.h>
 
 ListenerSocket::ListenerSocket(const uint16_t port, const uint16_t maxSimultaneousConnections)
@@ -46,6 +47,10 @@ Error ListenerSocket::init()
      *
      * https://stackoverflow.com/questions/24194961/how-do-i-use-setsockoptso-reuseaddr
      */
+    int reuse_addr = 1;
+    if (setsockopt(_listener.socket, SOL_SOCKET, SO_REUSEADDR, &reuse_addr, sizeof(reuse_addr)) < 0) {
+        return Error(wrapErrorno("сould not set socket SO_REUSEADDR: "));
+    }
     const uint8_t QueueLenght = _maxSimultaneousConnections;
     if (listen(_listener.socket, QueueLenght) > 0) {
         return Error(wrapErrorno("сould not set socket to the listen mode: "));
