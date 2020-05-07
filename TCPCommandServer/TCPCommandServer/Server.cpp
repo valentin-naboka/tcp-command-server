@@ -76,18 +76,20 @@ Error Server::run()
             handleListenerScoket();
         }
 
-        for (auto connectionIt = _connections.begin(); connectionIt != _connections.end(); ++connectionIt) {
+        for (auto connectionIt = _connections.cbegin(); connectionIt != _connections.cend();) {
             if (FD_ISSET((*connectionIt)->getSocket().socket, &readset)) {
-                handleClientConnection(connectionIt);
+                connectionIt = handleClientConnection(std::move(connectionIt));
+            }else{
+                ++connectionIt;
             }
         }
     }
     return Error();
 }
 
-void Server::closeClientConnection(const Connections::const_iterator& it)
+Connections::const_iterator Server::closeClientConnection(const Connections::const_iterator& it)
 {
-    _connections.erase(it);
+    return _connections.erase(it);
 }
 
 void Server::handleListenerScoket()
@@ -102,7 +104,7 @@ void Server::handleListenerScoket()
     }
 }
 
-void Server::handleClientConnection(const Connections::const_iterator& connIt)
+Connections::const_iterator Server::handleClientConnection(Connections::const_iterator connIt)
 {
     const auto& connection = *connIt;
     const auto& result = connection->read();
@@ -122,7 +124,7 @@ void Server::handleClientConnection(const Connections::const_iterator& connIt)
              * Excess leading spaces must be trimmed out from argument here.
              *
              * Valentin
-             * Regarding task description action function prototype is bool (*action_f)(std::string &arguments, int client_socket);
+             * According to the task description action function prototype is bool (*action_f)(std::string &arguments, int client_socket);
              * So, the arguments are passed via std::string, and spaces still left as the separators. It could be reimplemented with std::vector of arguments.
              */
             arguments = dataPacket->substr(commandLastPos + 1, dataPacket->size() - 1);
@@ -135,50 +137,21 @@ void Server::handleClientConnection(const Connections::const_iterator& connIt)
             if (const auto& error = connection->sendAck()) {
                 Logger::error(error);
             } else {
-                /**
-                 * MG
-                 *
-                 * Critical error (UB):
-                 *
-                 * Server::handleClientConnection() is called from loop over _connections
-                 * actionIt->second() being 'exit' handler calls Server::closeClientConnection() which modifies (erases element from) _conections
-                 *
-                 
-                 *
-                 */
-                actionIt->second(arguments, connIt);
+                std::stringstream ss;
+                ss << "command: " << command << "; arguments: " << arguments;
+                Logger::log(ss.str());
+                return actionIt->second(arguments, connIt);
             }
         }
-        std::stringstream ss;
-        ss << "command: " << command << "; arguments: " << arguments;
-        Logger::log(ss.str());
+        return std::move(++connIt);
     } else if (const auto* error = std::get_if<Error>(&result)) {
-        /**
-         * MG
-         *
-         * Looks like an error.
-         *
-         * Not triggering connection close here might potentially lead to errored connections not being removed from _connections
-         * and thus to resource leakage (both memory and file descriptors).
-         *
-         * In case of unrecoverable error in network communication it make sense to close the connection
-         * since it is in undefined state for us anyway.
-         * Better to define that state by closing it :)
-         *
-         */
         Logger::error(*error);
+        return closeClientConnection(connIt);
     } else if (const auto* closeTag = std::get_if<CloseTag>(&result)) {
-        /**
-         * MG
-         *
-         * Critical error (UB):
-         *
-         * Server::handleClientConnection() is called from loop over _connections
-         * Server::closeClientConnection() modifies (erases element from) _connections
-         *
-         */
-        closeClientConnection(connIt);
+        return closeClientConnection(connIt);
     }
+    assert("None of the std::variant cases have been handled.");
+    return _connections.cend();
 }
 
 int Server::getMaxSocketValue() const
