@@ -25,6 +25,9 @@ Server::Server(const uint16_t port, const uint16_t maxSimultaneousConnections)
      * from main() context.
      *
      * This would allow Server class to be reused in other applications/contexts.
+     *
+     * Valentin
+     * I agree. And better yet not to use singletons :)
      */
     SignalHandler::setupSignal(SIGINT);
     SignalHandler::setupSignal(SIGTERM);
@@ -66,6 +69,8 @@ Error Server::run()
          * select() return value should be handled.
          * At least for error logging purposes.
          *
+         * Valentin
+         * It's not obvious, but wrapErrorno handles errno code.
          */
         if (FD_ISSET(_listener.getRawSocket(), &readset)) {
             handleListenerScoket();
@@ -116,6 +121,9 @@ void Server::handleClientConnection(const Connections::const_iterator& connIt)
              *
              * Excess leading spaces must be trimmed out from argument here.
              *
+             * Valentin
+             * Regarding task description action function prototype is bool (*action_f)(std::string &arguments, int client_socket);
+             * So, the arguments are passed via std::string, and spaces still left as the separators. It could be reimplemented with std::vector of arguments.
              */
             arguments = dataPacket->substr(commandLastPos + 1, dataPacket->size() - 1);
         } else {
@@ -134,6 +142,8 @@ void Server::handleClientConnection(const Connections::const_iterator& connIt)
                  *
                  * Server::handleClientConnection() is called from loop over _connections
                  * actionIt->second() being 'exit' handler calls Server::closeClientConnection() which modifies (erases element from) _conections
+                 *
+                 
                  *
                  */
                 actionIt->second(arguments, connIt);
@@ -174,37 +184,9 @@ void Server::handleClientConnection(const Connections::const_iterator& connIt)
 int Server::getMaxSocketValue() const
 {
     auto maxSocketValue = _listener.getRawSocket();
-    /**
-     * MG
-     *
-     * Nitpick
-     *
-     * A bit over-engineered.
-     * The only reason could be if std::max_element had O(n) complexity.
-     * But it is not :)
-     *
-     * The following would do the trick with less lines of code:
-     *
-     * for (const auto& c : _connections) {
-     *	maxSocket_value = std::max(maxSocketValue, c.getSocket());
-     * }
-     *
-     */
-    if (!_connections.empty()) {
-        const auto maxIt = std::max_element(_connections.cbegin(),
-            _connections.cend(),
-            [](const Connections::value_type& lhs,
-                const Connections::value_type& rhs) {
-                return lhs->getSocket() < rhs->getSocket();
-            });
-
-        /**
-         * MG
-         *
-         * For empty list std::max_element() returns cend
-         * and maxIt must be check against it here
-         */
-        maxSocketValue = std::max((*maxIt)->getSocket().socket, maxSocketValue);
+    for (const auto& c : _connections) {
+        maxSocketValue = std::max(maxSocketValue, c->getSocket().socket);
     }
+
     return maxSocketValue + 1;
 }

@@ -41,6 +41,11 @@ ConnectionResult Connection::read() const
      * One of the solutions to this would be passing command-handler-callback to Connection::read(), feeding read bytes into Connection's private buffer (f.e. stringstream),
      * and monitoring command terminators ('\r's) in incoming data which would trigger a call to command-handler callback.
      * And then trimming all the white-spaces after that '\r'.
+     *
+     * Valentin
+     * recv is called in the loop until recv return value is greater than 0, and then appends all read bytes to the DataPacket packet inside the loop.
+     * Thus, if the command size is greater than bufferLenght we get bufferLenght bytes after first recv call and then receive the rest of bytes subsequently.
+     * Let's discuss this.
      */
     const auto BufferLenght = 1024u;
     char buffer[BufferLenght] = { 0 };
@@ -64,6 +69,11 @@ ConnectionResult Connection::read() const
      *
      * It is tricky here:
      * - if readSize is 0 and errno is EWOULDBLOCK or EAGAIN than we should probably keep reading
+     *
+     * Valentin
+     * The doc states: "When a stream socket peer has performed an orderly shutdown, the
+     * return value will be 0 (the traditional "end-of-file" return)." So, I suppose we need to handle such a case as a closing connection.
+     *  http://man7.org/linux/man-pages/man2/recv.2.html#RETURN_VALUE
      */
     if (readSize == 0) {
         return CloseTag {};
@@ -77,37 +87,12 @@ Error Connection::write(const DataPacket& data)
     const auto dataSize = data.size();
     while (sentSize < dataSize) {
         const auto chunkSentSize = send(_socketHolder.socket, data.data() + sentSize, data.size() - sentSize, 0);
-        if (chunkSentSize == -1) {
-            /**
-             * MG
-             *
-             * Error
-             *
-             * EWOULDBLOCK, EAGAIN should be hanled here.
-             *
-             * Nitpick
-             *
-             * EINTR would also be nice to handle.
-             */
-            return Error(std::strerror(errno));
+        if (chunkSentSize < 0 && (errno != EWOULDBLOCK || errno != EAGAIN || errno != EINTR)) {
+            return std::string("sending was failed: ") + std::strerror(errno);
         }
         sentSize += chunkSentSize;
     };
-
-    /**
-     *
-     * MG
-     *
-     * Error
-     *
-     * sentSize will never be negative here
-     *
-     * This entire block must be moved into while() loop above instead.
-     *
-     */
-    if (sentSize < 0 && (errno != EWOULDBLOCK || errno != EAGAIN)) {
-        return std::string("sending was failed: ") + std::strerror(errno);
-    }
+    
     return Error();
 }
 
