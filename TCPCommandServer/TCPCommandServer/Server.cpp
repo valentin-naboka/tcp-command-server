@@ -7,6 +7,7 @@
 #include "Connection.h"
 #include "SystemSignalsHandler.h"
 
+#include <cassert>
 #include <signal.h>
 #include <sstream>
 #include <variant>
