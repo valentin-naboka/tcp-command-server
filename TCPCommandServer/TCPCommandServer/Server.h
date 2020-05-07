@@ -4,10 +4,10 @@
 //-----------------------------------------------------------------------------
 
 #pragma once
+#include "Connections.h"
 #include "Error.h"
 #include "IConnection.h"
 #include "ListenerSocket.h"
-#include "Connections.h"
 
 #include <functional>
 #include <unordered_map>

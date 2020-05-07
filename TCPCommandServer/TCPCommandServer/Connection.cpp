@@ -92,7 +92,7 @@ Error Connection::write(const DataPacket& data)
         }
         sentSize += chunkSentSize;
     };
-    
+
     return Error();
 }
 

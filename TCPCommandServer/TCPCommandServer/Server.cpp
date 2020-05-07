@@ -79,7 +79,7 @@ Error Server::run()
         for (auto connectionIt = _connections.cbegin(); connectionIt != _connections.cend();) {
             if (FD_ISSET((*connectionIt)->getSocket().socket, &readset)) {
                 connectionIt = handleClientConnection(std::move(connectionIt));
-            }else{
+            } else {
                 ++connectionIt;
             }
         }
