@@ -4,6 +4,12 @@ The server responds "OK" - if the command is successfully executed, otherwise "E
 The code does not use exceptions.
 It uses "select" for async wait on multiple connections.
 
+Supported command:
+'exit'
+Do nothing and terminates current session.
+'version'
+Prints TCP server’s version.
+
 The sources compile for Ubuntu 18.04 with gcc 8.4.0
 For MacOS Mojave with Apple clang version 11.0.0 (clang-1100.0.33.8)
 
