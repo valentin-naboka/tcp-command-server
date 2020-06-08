@@ -24,29 +24,6 @@ const SocketHolder& Connection::getSocket() const
 ConnectionResult Connection::read() const
 {
     DataPacket packet;
-    /**
-     * MG
-     *
-     * Potential bug
-     *
-     * Client can sent commands of any size.
-     * If the command exceeds BufferLength below, we will receive incomplete command during the first Connection::read() call.
-     * The remainder of the first commands will be received during subsequent Connection::read() call.
-     * And both Connection::read() calls would result into errors.
-     * Which is obviously wrong :)
-     *
-     * I don't treat this as a major error within the context of this test task but just wanted to give some overview on complexity
-     * of this kind of tasks :)
-     *
-     * One of the solutions to this would be passing command-handler-callback to Connection::read(), feeding read bytes into Connection's private buffer (f.e. stringstream),
-     * and monitoring command terminators ('\r's) in incoming data which would trigger a call to command-handler callback.
-     * And then trimming all the white-spaces after that '\r'.
-     *
-     * Valentin
-     * recv is called in the loop until recv return value is greater than 0, and then appends all read bytes to the DataPacket packet inside the loop.
-     * Thus, if the command size is greater than bufferLenght we get bufferLenght bytes after first recv call and then receive the rest of bytes subsequently.
-     * Let's discuss this.
-     */
     const auto BufferLenght = 1024u;
     char buffer[BufferLenght] = { 0 };
 
@@ -64,17 +41,6 @@ ConnectionResult Connection::read() const
         return std::string("receiving was failed: ") + std::strerror(errno);
     }
 
-    /**
-     * MG
-     *
-     * It is tricky here:
-     * - if readSize is 0 and errno is EWOULDBLOCK or EAGAIN than we should probably keep reading
-     *
-     * Valentin
-     * The doc states: "When a stream socket peer has performed an orderly shutdown, the
-     * return value will be 0 (the traditional "end-of-file" return)." So, I suppose we need to handle such a case as a closing connection.
-     *  http://man7.org/linux/man-pages/man2/recv.2.html#RETURN_VALUE
-     */
     if (readSize == 0) {
         return CloseTag {};
     }

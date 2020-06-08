@@ -16,19 +16,7 @@ Server::Server(const uint16_t port, const uint16_t maxSimultaneousConnections)
     , _maxSimultaneousConnections(maxSimultaneousConnections)
 {
     SignalHandler::setupConnections(_connections);
-    /***
-     * MG
-     *
-     * Nitpick
-     *
-     * Having signal handlers is ok but it is better to have them installed
-     * from main() context.
-     *
-     * This would allow Server class to be reused in other applications/contexts.
-     *
-     * Valentin
-     * I agree. And better yet not to use singletons :)
-     */
+
     SignalHandler::setupSignal(SIGINT);
     SignalHandler::setupSignal(SIGTERM);
     SignalHandler::setupSignal(SIGKILL);
@@ -61,17 +49,6 @@ Error Server::run()
             return Error(wrapErrorno("selecting was failed: "));
         }
 
-        /**
-         * MG
-         *
-         * Minor in this case
-         *
-         * select() return value should be handled.
-         * At least for error logging purposes.
-         *
-         * Valentin
-         * It's not obvious, but wrapErrorno handles errno code.
-         */
         if (FD_ISSET(_listener.getRawSocket(), &readset)) {
             handleListenerScoket();
         }
@@ -114,19 +91,6 @@ Connections::const_iterator Server::handleClientConnection(Connections::const_it
         std::string arguments;
         if (commandLastPos != std::string::npos) {
             command = dataPacket->substr(0, commandLastPos);
-            /**
-             * MG
-             *
-             * Minor requirement violation
-             *
-             * req: Command and its arguments are separated with space(s) ...
-             *
-             * Excess leading spaces must be trimmed out from argument here.
-             *
-             * Valentin
-             * According to the task description action function prototype is bool (*action_f)(std::string &arguments, int client_socket);
-             * So, the arguments are passed via std::string, and spaces still left as the separators. It could be reimplemented with std::vector of arguments.
-             */
             arguments = dataPacket->substr(commandLastPos + 1, dataPacket->size() - 1);
         } else {
             command = *dataPacket;

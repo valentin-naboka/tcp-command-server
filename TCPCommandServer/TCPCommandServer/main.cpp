@@ -8,13 +8,6 @@
 #include <iostream>
 #include <unordered_map>
 
-/**
- * MG
- *
- * Kudos
- *
- * Having top level configuration on (actually) top level is nice.
- */
 const uint16_t Port = 5678;
 const uint16_t MaxSimultaneousConnections = 3;
 
@@ -23,7 +16,7 @@ int main(int argc, char* argv[])
     Server server(Port, MaxSimultaneousConnections);
 
     server.registerAction("version", [](const std::string& arguments, Connections::const_iterator connIt) {
-        const auto Version = "ZSoft test task server version 1.0.\n\r";
+        const auto Version = "Test task server version 1.0.\n\r";
         assert(*connIt);
         if (const auto& error = (*connIt)->write(Version)) {
             Logger::error(error);
