@@ -7,6 +7,7 @@
 #include "Connection.h"
 #include "SystemSignalsHandler.h"
 
+#include <cassert>
 #include <signal.h>
 #include <sstream>
 #include <variant>
@@ -25,6 +26,9 @@ Server::Server(const uint16_t port, const uint16_t maxSimultaneousConnections)
      * from main() context.
      *
      * This would allow Server class to be reused in other applications/contexts.
+     *
+     * Valentin
+     * I agree. And better yet not to use singletons :)
      */
     SignalHandler::setupSignal(SIGINT);
     SignalHandler::setupSignal(SIGTERM);
@@ -66,23 +70,27 @@ Error Server::run()
          * select() return value should be handled.
          * At least for error logging purposes.
          *
+         * Valentin
+         * It's not obvious, but wrapErrorno handles errno code.
          */
         if (FD_ISSET(_listener.getRawSocket(), &readset)) {
             handleListenerScoket();
         }
 
-        for (auto connectionIt = _connections.begin(); connectionIt != _connections.end(); ++connectionIt) {
+        for (auto connectionIt = _connections.cbegin(); connectionIt != _connections.cend();) {
             if (FD_ISSET((*connectionIt)->getSocket().socket, &readset)) {
-                handleClientConnection(connectionIt);
+                connectionIt = handleClientConnection(std::move(connectionIt));
+            } else {
+                ++connectionIt;
             }
         }
     }
     return Error();
 }
 
-void Server::closeClientConnection(const Connections::const_iterator& it)
+Connections::const_iterator Server::closeClientConnection(const Connections::const_iterator& it)
 {
-    _connections.erase(it);
+    return _connections.erase(it);
 }
 
 void Server::handleListenerScoket()
@@ -97,7 +105,7 @@ void Server::handleListenerScoket()
     }
 }
 
-void Server::handleClientConnection(const Connections::const_iterator& connIt)
+Connections::const_iterator Server::handleClientConnection(Connections::const_iterator connIt)
 {
     const auto& connection = *connIt;
     const auto& result = connection->read();
@@ -116,6 +124,9 @@ void Server::handleClientConnection(const Connections::const_iterator& connIt)
              *
              * Excess leading spaces must be trimmed out from argument here.
              *
+             * Valentin
+             * According to the task description action function prototype is bool (*action_f)(std::string &arguments, int client_socket);
+             * So, the arguments are passed via std::string, and spaces still left as the separators. It could be reimplemented with std::vector of arguments.
              */
             arguments = dataPacket->substr(commandLastPos + 1, dataPacket->size() - 1);
         } else {
@@ -127,84 +138,29 @@ void Server::handleClientConnection(const Connections::const_iterator& connIt)
             if (const auto& error = connection->sendAck()) {
                 Logger::error(error);
             } else {
-                /**
-                 * MG
-                 *
-                 * Critical error (UB):
-                 *
-                 * Server::handleClientConnection() is called from loop over _connections
-                 * actionIt->second() being 'exit' handler calls Server::closeClientConnection() which modifies (erases element from) _conections
-                 *
-                 */
-                actionIt->second(arguments, connIt);
+                std::stringstream ss;
+                ss << "command: " << command << "; arguments: " << arguments;
+                Logger::log(ss.str());
+                return actionIt->second(arguments, connIt);
             }
         }
-        std::stringstream ss;
-        ss << "command: " << command << "; arguments: " << arguments;
-        Logger::log(ss.str());
+        return std::move(++connIt);
     } else if (const auto* error = std::get_if<Error>(&result)) {
-        /**
-         * MG
-         *
-         * Looks like an error.
-         *
-         * Not triggering connection close here might potentially lead to errored connections not being removed from _connections
-         * and thus to resource leakage (both memory and file descriptors).
-         *
-         * In case of unrecoverable error in network communication it make sense to close the connection
-         * since it is in undefined state for us anyway.
-         * Better to define that state by closing it :)
-         *
-         */
         Logger::error(*error);
+        return closeClientConnection(connIt);
     } else if (const auto* closeTag = std::get_if<CloseTag>(&result)) {
-        /**
-         * MG
-         *
-         * Critical error (UB):
-         *
-         * Server::handleClientConnection() is called from loop over _connections
-         * Server::closeClientConnection() modifies (erases element from) _connections
-         *
-         */
-        closeClientConnection(connIt);
+        return closeClientConnection(connIt);
     }
+    assert("None of the std::variant cases have been handled.");
+    return _connections.cend();
 }
 
 int Server::getMaxSocketValue() const
 {
     auto maxSocketValue = _listener.getRawSocket();
-    /**
-     * MG
-     *
-     * Nitpick
-     *
-     * A bit over-engineered.
-     * The only reason could be if std::max_element had O(n) complexity.
-     * But it is not :)
-     *
-     * The following would do the trick with less lines of code:
-     *
-     * for (const auto& c : _connections) {
-     *	maxSocket_value = std::max(maxSocketValue, c.getSocket());
-     * }
-     *
-     */
-    if (!_connections.empty()) {
-        const auto maxIt = std::max_element(_connections.cbegin(),
-            _connections.cend(),
-            [](const Connections::value_type& lhs,
-                const Connections::value_type& rhs) {
-                return lhs->getSocket() < rhs->getSocket();
-            });
-
-        /**
-         * MG
-         *
-         * For empty list std::max_element() returns cend
-         * and maxIt must be check against it here
-         */
-        maxSocketValue = std::max((*maxIt)->getSocket().socket, maxSocketValue);
+    for (const auto& c : _connections) {
+        maxSocketValue = std::max(maxSocketValue, c->getSocket().socket);
     }
+
     return maxSocketValue + 1;
 }

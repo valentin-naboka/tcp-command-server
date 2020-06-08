@@ -22,26 +22,25 @@ int main(int argc, char* argv[])
 {
     Server server(Port, MaxSimultaneousConnections);
 
-    server.registerAction("version", [](const std::string& arguments, const Connections::const_iterator& connIt) {
+    server.registerAction("version", [](const std::string& arguments, Connections::const_iterator connIt) {
         const auto Version = "ZSoft test task server version 1.0.\n\r";
         assert(*connIt);
         if (const auto& error = (*connIt)->write(Version)) {
             Logger::error(error);
-            return false;
+            return std::move(++connIt);
         }
 
         if (const auto& error = (*connIt)->sendAck()) {
             Logger::error(error);
         }
-        return true;
+        return std::move(++connIt);
     });
 
-    server.registerAction("exit", [&server](const std::string& arguments, const Connections::const_iterator& connIt) {
+    server.registerAction("exit", [&server](const std::string& arguments, Connections::const_iterator connIt) {
         if (const auto& error = (*connIt)->sendAck()) {
             Logger::error(error);
         }
-        server.closeClientConnection(connIt);
-        return true;
+        return server.closeClientConnection(connIt);
     });
 
     Logger::log("Starting server...");

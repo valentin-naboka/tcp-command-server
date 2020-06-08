@@ -4,15 +4,15 @@
 //-----------------------------------------------------------------------------
 
 #pragma once
+#include "Connections.h"
 #include "Error.h"
 #include "IConnection.h"
 #include "ListenerSocket.h"
-#include "Connections.h"
 
 #include <functional>
 #include <unordered_map>
 
-using Action = std::function<bool(const std::string& arguments, const Connections::const_iterator& conn)>;
+using Action = std::function<Connections::const_iterator(const std::string& arguments, Connections::const_iterator conn)>;
 using ActionsMap = std::unordered_map<std::string, Action>;
 
 class Server {
@@ -21,11 +21,11 @@ public:
 
     void registerAction(std::string name, Action action);
     Error run();
-    void closeClientConnection(const Connections::const_iterator& it);
+    Connections::const_iterator closeClientConnection(const Connections::const_iterator& it);
 
 private:
     void handleListenerScoket();
-    void handleClientConnection(const Connections::const_iterator& connIt);
+    Connections::const_iterator handleClientConnection(Connections::const_iterator connIt);
     int getMaxSocketValue() const;
 
 private:
