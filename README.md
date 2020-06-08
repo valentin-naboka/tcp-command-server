@@ -5,8 +5,10 @@ The code does not use exceptions.
 It uses "select" for async wait on multiple connections.
 
 Supported command:
+
 'exit'
 Do nothing and terminates current session.
+
 'version'
 Prints TCP server’s version.
 
